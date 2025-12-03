@@ -1,111 +1,126 @@
-**Fine-Tuning YOYOv12 for Real-Time Cataract Detection on Edge Devices**
+# Fine-Tuning YOLOv12 for Real-Time Cataract Detection on Edge Devices
 
-This repository presents a complete pipeline for training, optimizing, and deploying a real-time cataract detection system using YOLOv12. The model is fine-tuned on a cataract detection dataset and further optimized for mobile inference using TensorFlow Lite.
-A severity-classification module is also included to classify cataracts as Mild, Moderate, or Severe.
+This repository presents a complete, end-to-end system for real-time cataract detection using the YOLOv12 architecture. The model is optimized for mobile and edge devices, supports offline inference, and includes an additional severity-classification module for grading cataracts. The full workflow is demonstrated inside the included notebook.
 
-The system is designed for fast, offline, on-device medical screening in rural clinics, telemedicine setups, and low-resource environments.
+---
 
-**Key Highlights**
+## 1. Objective
 
-Fine-tuned YOLOv12 with Area Attention & FlashAttention
+The goal of this project is to build a fast, lightweight, and accurate cataract detection system capable of running entirely on-device without requiring cloud or GPU access. The system supports:
 
-Real-time detection (~15 ms per frame)
+- Real-time cataract detection using YOLOv12  
+- Automatic region-of-interest extraction  
+- Cataract severity grading (Mild, Moderate, Severe, Normal)  
+- Deployment-ready TensorFlow Lite model for smartphones  
 
-On-device deployment using TFLite
+This solution is designed for low-resource medical environments such as rural clinics, health camps, and telemedicine platforms.
 
-Automated cropping of detected cataract regions
+---
 
-Severity grading using ResNet18 classifier
+## 2. Key Features
 
-Dataset loading through Roboflow API
+- Fine-tuned YOLOv12 detection model  
+- Area Attention, FlashAttention, and R-ELAN enhancements  
+- Efficient 416×416 medical image pipeline  
+- Automated cropping of detected cataract regions  
+- ResNet18-based severity classifier  
+- TFLite quantized model for Android devices  
+- Fully reproducible workflow inside the notebook  
 
-Fully reproducible training notebook
+---
 
-Supports both GPU training and CPU inference
+## 3. Architecture
 
-**Model Workflow**
-1. YOLOv12 Fine-Tuning
+Fundus Image → YOLOv12 Detection → ROI Cropping → ResNet18 Classifier → Severity Score
 
-Data loaded from Roboflow
 
-Preprocessing (resize, normalize, augment)
+### Detection  
+- YOLOv12s architecture  
+- Uses Area Attention for improved global context  
+- FlashAttention provides fast attention computation  
+- R-ELAN enhances feature aggregation efficiency  
 
-Trained for 50 epochs
+### Severity Classification  
+- Lightweight ResNet18  
+- Predicts: Mild, Moderate, Severe, Normal  
 
-Achieves high mAP and precision
+---
 
-2. Detection & Region Cropping
+## 4. Dataset
 
-YOLOv12 detects cataract-affected regions.
-Bounding box crops are automatically extracted for further classification.
+- Collected from Roboflow dataset “Cataract Finder”  
+- YOLO-format annotations  
+- All images resized to 416×416  
+- Includes standard medical image preprocessing:  
+  - Contrast enhancement  
+  - Normalization  
+  - Augmentation (flip, rotation)  
 
-3. Severity Classification
+The entire dataset preparation pipeline is inside the notebook.
 
-A lightweight ResNet18 model predicts:
+---
 
-Severe
+## 5. Performance Summary
 
-Moderate
+| Model | Size | mAP@0.5 | Latency | Deployment |
+|-------|------|----------|---------|------------|
+| YOLOv12s FP32 | 30 MB | 93% | 11 ms | GPU |
+| YOLOv12s TFLite int8 | 19 MB | 86% | 15 ms | Android CPU |
 
-Mild
+The optimized model maintains strong accuracy while enabling fully offline, real-time mobile inference.
 
-Normal
+---
 
-This enables actionable medical grading.
+## 6. Applications
 
-4. TFLite Optimization
+This system is intended for practical, real-world medical screening:
 
-Static int8 quantization
+- Rural primary healthcare centers  
+- Eye screening camps  
+- Telemedicine platforms  
+- School or community health programmes  
+- Mobile-based diagnostic tools  
+- Early detection and triaging  
 
-Operator fusion
+---
 
-ARM-optimized kernels
+## 7. Deployment
 
-Suitable for smartphone deployment
+The project includes:
 
-**Performance**
+- A fine-tuned YOLOv12 model  
+- A TFLite-optimized model for smartphones  
+- A severity classifier trained on cropped cataract regions  
+- A single notebook demonstrating the full pipeline  
 
-| Metric         | YOLOv12 Original | YOLOv12 Optimized (TFLite) |
-| -------------- | ---------------- | -------------------------- |
-| Model Size     | 30 MB            | 19 MB                      |
-| Inference Time | 11 ms            | 15 ms                      |
-| F1-Score       | 91%              | 83%                        |
-| mAP@0.5        | 93%              | 86%                        |
-| Precision      | 92%              | 85%                        |
-| Recall         | 90%              | 81%                        |
+The model can be integrated into:
 
-**Technologies Used**
+- Android (Kotlin/Java)  
+- Flutter mobile applications  
+- Raspberry Pi  
+- Jetson Nano  
 
-| Component         | Technology                     |
-| ----------------- | ------------------------------ |
-| Detection         | YOLOv12                        |
-| Attention         | FlashAttention, Area Attention |
-| Classifier        | ResNet18                       |
-| Optimizer         | PyTorch + Ultralytics          |
-| Mobile Deployment | TensorFlow Lite                |
-| Visualization     | Supervision                    |
-| Dataset Loader    | Roboflow API                   |
-| Optional App      | Flutter                        |
+---
 
-**Dataset**
+## 8. Future Work
 
-Cloudy-Eyes Dataset
+- DINOv2-based unsupervised detection without labeled data  
+- Multi-disease detection (glaucoma, diabetic retinopathy)  
+- Severity heatmap visualization (Grad-CAM)  
+- Increasing dataset diversity  
+- Clinical testing and validation  
 
-2,400 annotated images
+---
 
-1,200 cataract
+## 9. Authors
 
-1,200 normal
+- Varsha Sajjanavar  
+- Akshay Poojary  
+- Darshan Lingraddi  
+- Shreeporna Petkar  
+- Narayan D G  
+- Dr. Uday Kulkarni  
 
-YOLO-format bounding boxes
+---
 
-Preprocessing:
-
-Resize (416x416)
-
-Normalization
-
-Histogram equalization
-
-Augmentation
-
+This repository contains the fully executable notebook for training, inference, evaluation, and deployment of the cataract detection system.
