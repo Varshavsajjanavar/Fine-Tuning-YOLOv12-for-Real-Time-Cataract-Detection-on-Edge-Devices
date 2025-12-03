@@ -102,25 +102,4 @@ The model can be integrated into:
 
 ---
 
-## 8. Future Work
-
-- DINOv2-based unsupervised detection without labeled data  
-- Multi-disease detection (glaucoma, diabetic retinopathy)  
-- Severity heatmap visualization (Grad-CAM)  
-- Increasing dataset diversity  
-- Clinical testing and validation  
-
----
-
-## 9. Authors
-
-- Varsha Sajjanavar  
-- Akshay Poojary  
-- Darshan Lingraddi  
-- Shreeporna Petkar  
-- Narayan D G  
-- Dr. Uday Kulkarni  
-
----
-
 This repository contains the fully executable notebook for training, inference, evaluation, and deployment of the cataract detection system.
